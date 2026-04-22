@@ -1,0 +1,22 @@
+[
+    {
+        "id": "user_69e734e426948",
+        "name": "aek",
+        "email": "aekbokhan2143232@gmail.com",
+        "password": "$2y$10$uK0v9B7sU30GfspzVVSa4.nw\/GdogEJ62djGv.2GJHxl7ze3SnRTC",
+        "phone": "",
+        "is_verified": true,
+        "verification_code": null,
+        "created_at": "2026-04-21 10:27:16"
+    },
+    {
+        "id": "user_69e734abef218",
+        "name": "Селиванов Артём Романович",
+        "email": "aek.seli.214323@gmail.com",
+        "password": "$2y$10$7wFw\/CmS8tNTQAJLQ.wOEOLShm5wxXmPlvD2bscUn80jRwN2INw72",
+        "phone": "",
+        "is_verified": true,
+        "verification_code": null,
+        "created_at": "2026-04-21 10:26:20"
+    }
+]

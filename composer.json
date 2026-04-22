@@ -1,0 +1,30 @@
+{
+    "name": "coopteh/insurance221",
+    "description": "Сайт страховой компании - курсовая работа",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "phpmailer/phpmailer": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Controllers\\": "Controllers/",
+            "Views\\": "Views/",
+            "Models\\": "Models/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Student",
+            "email": "student@kuzbasskt.ru"
+        }
+    ],
+    "require-dev": {
+        "nunomaduro/phpinsights": "*"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}
