@@ -10,7 +10,7 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     die('❌ Ошибка: Не найден vendor/autoload.php. Выполните: composer install');
 }
 
-// Импортируем классы
+// Импортируем классы (✅ ДОБАВЛЕН UserController)
 use Controllers\{
     HomeController,
     AboutController,
@@ -18,7 +18,8 @@ use Controllers\{
     ProductController,
     CartController,
     OrderController,
-    ErrorController
+    ErrorController,
+    UserController  // ← ВАЖНО: добавлен
 };
 
 // Получаем текущий URI
@@ -28,41 +29,72 @@ $resource = trim($path, '/');
 $resource = preg_replace('/[^a-zA-Z0-9\-_\/]/', '', $resource);
 
 // ==========================================
+// 👤 МАРШРУТЫ АВТОРИЗАЦИИ
+// ==========================================
+if ($resource === 'register' && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    echo (new UserController())->showRegister();
+    exit;
+}
+if ($resource === 'register' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    (new UserController())->register();
+    exit;
+}
+if ($resource === 'login' && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    echo (new UserController())->showLogin();
+    exit;
+}
+if ($resource === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    (new UserController())->login();
+    exit;
+}
+if ($resource === 'logout' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    (new UserController())->logout();
+    exit;
+}
+if ($resource === 'profile' && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    echo (new UserController())->profile();
+    exit;
+}
+if ($resource === 'profile/update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    (new UserController())->updateProfile();
+    exit;
+}
+
+
+// 🆕 Маршрут подтверждения кода (страница ввода)
+if ($resource === 'verify' && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    echo (new UserController())->showVerify();
+    exit;
+}
+if ($resource === 'verify' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    (new UserController())->verify();
+    exit;
+}
+// ==========================================
 // 🛒 МАРШРУТЫ КОРЗИНЫ
 // ==========================================
 if ($resource === 'cart/count' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    $controller = new CartController();
-    $controller->getCountJson();
+    (new CartController())->getCountJson();
     exit;
 }
-
 if ($resource === 'cart/add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $controller = new CartController();
-    $controller->add();
+    (new CartController())->add();
     exit;
 }
-
 if ($resource === 'cart/remove' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $controller = new CartController();
-    $controller->remove();
+    (new CartController())->remove();
     exit;
 }
-
 if ($resource === 'cart/clear' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $controller = new CartController();
-    $controller->clear();
+    (new CartController())->clear();
     exit;
 }
-
 if ($resource === 'cart/update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $controller = new CartController();
-    $controller->update();
+    (new CartController())->update();
     exit;
 }
-
 if ($resource === 'cart' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    $controller = new CartController();
-    echo $controller->view();
+    echo (new CartController())->view();
     exit;
 }
 
@@ -70,20 +102,15 @@ if ($resource === 'cart' && $_SERVER['REQUEST_METHOD'] === 'GET') {
 // 📦 МАРШРУТЫ ЗАКАЗОВ
 // ==========================================
 if ($resource === 'order/checkout' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    $controller = new OrderController();
-    echo $controller->checkout();
+    echo (new OrderController())->checkout();
     exit;
 }
-
 if ($resource === 'order/submit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $controller = new OrderController();
-    $controller->submit();
+    (new OrderController())->submit();
     exit;
 }
-
 if ($resource === 'order/success' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    $controller = new OrderController();
-    echo $controller->success();
+    echo (new OrderController())->success();
     exit;
 }
 
@@ -91,14 +118,11 @@ if ($resource === 'order/success' && $_SERVER['REQUEST_METHOD'] === 'GET') {
 // 🔐 МАРШРУТЫ АДМИНКИ
 // ==========================================
 if ($resource === 'admin/orders') {
-    $controller = new OrderController();
-    echo $controller->admin();
+    echo (new OrderController())->admin();
     exit;
 }
-
 if ($resource === 'admin/update-status' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $controller = new OrderController();
-    $controller->updateStatus();
+    (new OrderController())->updateStatus();
     exit;
 }
 
@@ -108,12 +132,10 @@ if ($resource === 'admin/update-status' && $_SERVER['REQUEST_METHOD'] === 'POST'
 if (preg_match('/^course\/(\d+)$/', $resource, $matches)) {
     $productId = (int)$matches[1];
     if ($productId >= 1 && $productId <= 6) {
-        $controller = new ProductController($productId);
-        echo $controller->get();
+        echo (new ProductController($productId))->get();
     } else {
         http_response_code(404);
-        $controller = new ErrorController();
-        echo $controller->get();
+        echo (new ErrorController())->get();
     }
     exit;
 }
@@ -124,24 +146,18 @@ if (preg_match('/^course\/(\d+)$/', $resource, $matches)) {
 switch ($resource) {
     case '':
     case 'home':
-        $controller = new HomeController();
-        echo $controller->get();
+    case 'index.php':
+        echo (new HomeController())->get();
         break;
-
     case 'products':
     case 'course':
-        $controller = new ProductsController();
-        echo $controller->get();
+        echo (new ProductsController())->get();
         break;
-
     case 'about':
-        $controller = new AboutController();
-        echo $controller->get();
+        echo (new AboutController())->get();
         break;
-
     default:
         http_response_code(404);
-        $controller = new ErrorController();
-        echo $controller->get();
+        echo (new ErrorController())->get();
         break;
 }

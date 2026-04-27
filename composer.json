@@ -20,7 +20,8 @@
         }
     ],
     "require-dev": {
-        "nunomaduro/phpinsights": "*"
+        "nunomaduro/phpinsights": "*",
+        "phpmetrics/phpmetrics": "^2.9"
     },
     "config": {
         "allow-plugins": {
