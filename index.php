@@ -1,16 +1,47 @@
 <?php
-// Включаем отображение ошибок
+// Включаем отображение ошибок (для разработки)
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Подключаем автозагрузку Composer
+// Автозагрузка
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
+    require_once __DIR__ . '/Services/Logger.php';
 } else {
-    die('❌ Ошибка: Не найден vendor/autoload.php. Выполните: composer install');
+    die('❌ Ошибка: Не найден vendor/autoload.php');
 }
 
-// Импортируем классы (✅ ДОБАВЛЕН UserController)
+// Глобальный обработчик ошибок
+set_error_handler(function($severity, $message, $file, $line) {
+    $logger = new \Services\Logger();
+    $logger->error("PHP Error", [
+        'message' => $message,
+        'file' => $file,
+        'line' => $line,
+        'severity' => $severity
+    ]);
+    
+    if (!(error_reporting() & $severity)) {
+        return false;
+    }
+    
+    throw new ErrorException($message, 0, $severity, $file, $line);
+});
+
+set_exception_handler(function($exception) {
+    $logger = new \Services\Logger();
+    $logger->error("Uncaught Exception", [
+        'message' => $exception->getMessage(),
+        'file' => $exception->getFile(),
+        'line' => $exception->getLine(),
+        'trace' => $exception->getTraceAsString()
+    ]);
+    
+    http_response_code(500);
+    echo '<h1>Произошла ошибка</h1><p>Ошибка записана в лог.</p>';
+});
+
+// Импортируем классы
 use Controllers\{
     HomeController,
     AboutController,
@@ -19,8 +50,10 @@ use Controllers\{
     CartController,
     OrderController,
     ErrorController,
-    UserController  // ← ВАЖНО: добавлен
+    UserController
 };
+
+// ... остальной код роутинга ...
 
 // Получаем текущий URI
 $requestUri = $_SERVER['REQUEST_URI'];

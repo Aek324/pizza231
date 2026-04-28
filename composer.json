@@ -10,7 +10,9 @@
         "psr-4": {
             "Controllers\\": "Controllers/",
             "Views\\": "Views/",
-            "Models\\": "Models/"
+            "Models\\": "Models/",
+            "Services\\": "Services/",
+            "Config\\": "Config/"
         }
     },
     "authors": [
