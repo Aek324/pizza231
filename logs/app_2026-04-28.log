@@ -32,3 +32,9 @@
 [2026-04-28 06:48:01] [INFO] Registration started | {"user_id":4,"email":"aekbokhan2143232@gmail.com"}
 [2026-04-28 06:48:19] [INFO] User updated | {"user_id":4}
 [2026-04-28 06:48:19] [INFO] User logged in | {"user_id":4}
+[2026-04-28 11:23:07] [INFO] User logged out | {"user_id":4}
+[2026-04-28 11:23:12] [INFO] User updated | {"user_id":4}
+[2026-04-28 11:23:17] [INFO] Код успешно отправлен на aekbokhan2143232@gmail.com
+[2026-04-28 11:23:17] [INFO] 2FA code sent | {"user_id":4}
+[2026-04-28 11:23:37] [INFO] User updated | {"user_id":4}
+[2026-04-28 11:23:37] [INFO] User logged in | {"user_id":4}
