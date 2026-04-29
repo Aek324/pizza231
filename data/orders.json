@@ -1,5 +1,97 @@
 [
     {
+        "id": "ORD-20260429-CEEF3E",
+        "created_at": "2026-04-29 20:20:28",
+        "status": "new",
+        "customer": {
+            "name": "aek",
+            "phone": "89049982824",
+            "email": "aekbokhan2143232@gmail.com"
+        },
+        "items": [
+            {
+                "id": 2,
+                "title": "Овощи и зелень",
+                "price": "от 80 ₽\/кг",
+                "icon": "🥬",
+                "duration": "В наличии • Доставка 60 мин",
+                "quantity": 1,
+                "added_at": 1777486823
+            }
+        ],
+        "total": 80,
+        "user_id": 1
+    },
+    {
+        "id": "ORD-20260429-8CA220",
+        "created_at": "2026-04-29 20:06:32",
+        "status": "new",
+        "customer": {
+            "name": "aek",
+            "phone": "89049982824",
+            "email": "aekbokhan2143232@gmail.com"
+        },
+        "items": [
+            {
+                "id": 2,
+                "title": "Овощи и зелень",
+                "price": "от 80 ₽\/кг",
+                "icon": "🥬",
+                "duration": "В наличии • Доставка 60 мин",
+                "quantity": 1,
+                "added_at": 1777485986
+            }
+        ],
+        "total": 80,
+        "user_id": 1
+    },
+    {
+        "id": "ORD-20260429-1E3227",
+        "created_at": "2026-04-29 20:05:53",
+        "status": "new",
+        "customer": {
+            "name": "aek",
+            "phone": "89049982824",
+            "email": "aekbokhan2143232@gmail.com"
+        },
+        "items": [
+            {
+                "id": 5,
+                "title": "Рыба и морепродукты",
+                "price": "от 450 ₽\/кг",
+                "icon": "🐟",
+                "duration": "В наличии • Доставка 60 мин",
+                "quantity": 1,
+                "added_at": 1777485847
+            }
+        ],
+        "total": 450,
+        "user_id": 1
+    },
+    {
+        "id": "ORD-20260429-5F2F71",
+        "created_at": "2026-04-29 10:43:33",
+        "status": "new",
+        "customer": {
+            "name": "aek",
+            "phone": "89049982824",
+            "email": "aekbokhan2143232@gmail.com"
+        },
+        "items": [
+            {
+                "id": 3,
+                "title": "Молочные продукты",
+                "price": "от 90 ₽",
+                "icon": "🥛",
+                "duration": "В наличии • Доставка 60 мин",
+                "quantity": 1,
+                "added_at": 1777451575
+            }
+        ],
+        "total": 90,
+        "user_id": 4
+    },
+    {
         "id": "ORD-20260428-151AAC",
         "created_at": "2026-04-28 06:16:01",
         "status": "new",

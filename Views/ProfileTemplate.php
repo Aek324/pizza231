@@ -1,5 +1,6 @@
 <?php
 namespace Views;
+
 class ProfileTemplate extends BaseTemplate
 {
     public static function getTemplate($userOrders = []): string
@@ -15,35 +16,54 @@ class ProfileTemplate extends BaseTemplate
         // Генерация HTML таблицы заказов
         $ordersHtml = '';
         if (empty($userOrders)) {
-            $ordersHtml = '<tr><td colspan="4" class="text-center py-3 text-muted">История заказов пуста</td></tr>';
+            $ordersHtml = '<tr><td colspan="5" class="text-center py-3 text-muted">История заказов пуста</td></tr>';
         } else {
+            $statusMap = [
+                'new' => ['label' => 'Новый', 'class' => 'warning'],
+                'processing' => ['label' => 'Обработка', 'class' => 'info'],
+                'paid' => ['label' => 'Оплачен', 'class' => 'primary'],
+                'shipped' => ['label' => 'Отправлен', 'class' => 'secondary'],
+                'completed' => ['label' => 'Выполнен', 'class' => 'success'],
+                'cancelled' => ['label' => 'Отменён', 'class' => 'danger']
+            ];
+            
             foreach ($userOrders as $order) {
-                $statusMap = ['new' => 'Новый', 'processing' => 'Обработка', 'completed' => 'Выполнен', 'cancelled' => 'Отменен'];
-                $statusLabel = $statusMap[$order['status']] ?? $order['status'];
+                $status = $order['status'];
+                $statusInfo = $statusMap[$status] ?? ['label' => $status, 'class' => 'secondary'];
+                
                 $ordersHtml .= '<tr>
-                    <td>' . htmlspecialchars($order['id']) . '</td>
+                    <td>' . htmlspecialchars($order['order_number']) . '</td>
                     <td>' . date('d.m.Y H:i', strtotime($order['created_at'])) . '</td>
-                    <td><strong>' . number_format($order['total'], 0, '.', ' ') . ' ₽</strong></td>
-                    <td><span class="badge bg-' . ($order['status'] === 'new' ? 'warning' : 'success') . '">' . $statusLabel . '</span></td>
+                    <td>' . (int)$order['items_count'] . ' шт.</td>
+                    <td><strong>' . number_format($order['total_price'], 0, '.', ' ') . ' ₽</strong></td>
+                    <td><span class="badge bg-' . $statusInfo['class'] . '">' . $statusInfo['label'] . '</span></td>
                 </tr>';
             }
         }
 
         $content = '
         <style>
-            .profile-card { background: white; border-radius: 20px; padding: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+            .profile-card { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 40px rgba(0,0,0,0.1); margin-bottom: 2rem; }
             .btn-update { background: linear-gradient(135deg, #ff6b35, #f7931e); border: none; padding: 0.8rem; color: white; font-weight: 700; border-radius: 50px; }
             .orders-table th { background: #f8f9fa; }
         </style>
         <section class="container py-4">
-            <h2 class="mb-4">👤 ' . htmlspecialchars($_SESSION['user_name']) . '</h2>
+            <h2 class="mb-4"> ' . htmlspecialchars($_SESSION['user_name']) . '</h2>
             ' . $alertHtml . '
             
             <div class="profile-card">
-                <h4 class="mb-3">📜 История заказов</h4>
+                <h4 class="mb-3"> История заказов</h4>
                 <div class="table-responsive">
                     <table class="table orders-table align-middle">
-                        <thead><tr><th>№ Заказа</th><th>Дата</th><th>Сумма</th><th>Статус</th></tr></thead>
+                        <thead>
+                            <tr>
+                                <th>№ Заказа</th>
+                                <th>Дата</th>
+                                <th>Товаров</th>
+                                <th>Сумма</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
                         <tbody>' . $ordersHtml . '</tbody>
                     </table>
                 </div>

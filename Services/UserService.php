@@ -7,88 +7,48 @@ use PDO;
 class UserService
 {
     private PDO $db;
-    private Logger $logger;
-    
+
     public function __construct()
     {
         $this->db = Database::getInstance();
-        $this->logger = new Logger();
     }
-    
+
     public function findByEmail(string $email): ?array
     {
         $stmt = $this->db->prepare("SELECT * FROM users WHERE email = ?");
         $stmt->execute([$email]);
-        $user = $stmt->fetch();
-        
-        return $user ?: null;
+        return $stmt->fetch() ?: null;
     }
-    
+
     public function findById(int $id): ?array
     {
         $stmt = $this->db->prepare("SELECT * FROM users WHERE id = ?");
         $stmt->execute([$id]);
-        $user = $stmt->fetch();
-        
-        return $user ?: null;
+        return $stmt->fetch() ?: null;
     }
-    
+
     public function create(array $data): int
     {
-        $stmt = $this->db->prepare("
-            INSERT INTO users (name, email, password, role, is_verified, verification_code, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, NOW())
-        ");
-        
-        $stmt->execute([
-            $data['name'],
-            $data['email'],
-            $data['password'],
-            $data['role'] ?? 'user',
-            $data['is_verified'] ?? 0,
-            $data['verification_code'] ?? null
-        ]);
-        
-        $userId = (int)$this->db->lastInsertId();
-        $this->logger->info("User created", ['user_id' => $userId, 'email' => $data['email']]);
-        
-        return $userId;
+        $stmt = $this->db->prepare("INSERT INTO users (name, email, password, role, is_verified, verification_code, created_at) VALUES (?, ?, ?, 'user', 0, ?, NOW())");
+        $stmt->execute([$data['name'], $data['email'], $data['password'], $data['code']]);
+        return (int)$this->db->lastInsertId();
     }
-    
+
     public function update(int $id, array $data): bool
     {
         $fields = [];
-        $values = [];
-        
-        foreach ($data as $key => $value) {
-            $fields[] = "$key = ?";
-            $values[] = $value;
+        $vals = [];
+        foreach ($data as $k => $v) {
+            $fields[] = "$k = ?";
+            $vals[] = $v;
         }
-        
-        $values[] = $id;
-        $sql = "UPDATE users SET " . implode(', ', $fields) . " WHERE id = ?";
-        
-        $stmt = $this->db->prepare($sql);
-        $result = $stmt->execute($values);
-        
-        $this->logger->info("User updated", ['user_id' => $id]);
-        
-        return $result;
+        $vals[] = $id;
+        return $this->db->prepare("UPDATE users SET " . implode(',', $fields) . " WHERE id = ?")->execute($vals);
     }
-    
-    public function verifyEmail(int $userId): bool
+
+    // Этот метод вызывал ошибку ранее, теперь он здесь
+    public function verify(int $id): bool
     {
-        return $this->update($userId, ['is_verified' => 1, 'verification_code' => null]);
-    }
-    
-    public function hasRole(int $userId, string $role): bool
-    {
-        $user = $this->findById($userId);
-        return $user && $user['role'] === $role;
-    }
-    
-    public function isAdmin(int $userId): bool
-    {
-        return $this->hasRole($userId, 'admin');
+        return $this->update($id, ['is_verified' => 1, 'verification_code' => null]);
     }
 }
