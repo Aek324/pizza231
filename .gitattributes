@@ -1,0 +1,20 @@
+# Для всех файлов — автоматическое определение
+* text=auto
+
+# Принудительно использовать LF для критичных файлов
+.htaccess text eol=lf
+.gitignore text eol=lf
+*.php text eol=lf
+*.sql text eol=lf
+*.json text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
+*.env text eol=lf
+
+# Бинарные файлы не трогать
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
