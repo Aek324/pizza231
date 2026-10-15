@@ -13,7 +13,7 @@ class OrderValidationTest extends TestCase
             $errors[] = 'Некорректный номер телефона';
         }
         
-        $this->assertContains('Неправильный телефон', $errors);
+        $this->assertContains('Некорректный номер телефона', $errors);
         $this->assertNotEmpty($errors);
     }
 
