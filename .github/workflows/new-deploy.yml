@@ -1,9 +1,9 @@
-name: PHP_CI_<new>
+name: PHP_CI_new
 
 on:
   push:
     branches:
-      - <new>
+      - new
 
 jobs:
   build:
